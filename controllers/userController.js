@@ -1,11 +1,20 @@
 const {User, Thought} = require('../models');
 
+// Aggregate function to get the number of friends
+const friendCount = async () => {
+  const numberOfFriends = await User.aggregate()
+    .count('friendCount');
+    console.log(numberOfFriends);
+  return numberOfFriends;
+}
+
+
 module.exports = {
   // get all users
   async getUsers(req,res){
     try{
       const users = await User.find();
-      req.json(users);
+      res.json(users);
     }catch(err){
       res.status(500).json(err);
     }
@@ -18,7 +27,13 @@ module.exports = {
       if (!user){
         return res.status(404).json.({message: 'no user with that ID'});
       }
-      res.json(user);
+
+      const userObj = {
+        user,
+        friendCount: await friendCount(),
+      };
+
+      res.json(userObj);
     }catch(err){
       res.status(500).json(err);
     }

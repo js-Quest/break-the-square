@@ -39,16 +39,16 @@ const userSchema = new Schema(
     id: false,
   }
 )
-// userSchema.virtual('friendCount').get(function () {
-//   return this.friends.length;
-// });
-
-userSchema.virtual('friendCount', {
-  ref: 'User',
-  localField: '_id',
-  foreignField: 'friends',
-  count: true,
+userSchema.virtual('friendCount').get(function () {
+  return this.friends.length;
 });
+
+// userSchema.virtual('friendCount', {
+//   ref: 'User',
+//   localField: '_id',
+//   foreignField: 'friends',
+//   count: true,
+// });
 
 // Schema Settings:
 

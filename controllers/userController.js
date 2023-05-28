@@ -16,6 +16,7 @@ module.exports = {
       const users = await User.find();
       res.json(users);
     }catch(err){
+      console.log('error$$$$$$$')
       res.status(500).json(err);
     }
   },
@@ -25,7 +26,7 @@ module.exports = {
       const user = await User.findOne({_id: req.params.userId})
         .select('-__v'); //exclude the -__v field
       if (!user){
-        return res.status(404).json.({message: 'no user with that ID'});
+        return res.status(404).json({message: 'no user with that ID'});
       }
 
       const userObj = {
@@ -42,6 +43,7 @@ module.exports = {
   async createUser(req,res){
     try{
       const user = await User.create(req.body);
+      console.log('created user')
       res.json(user);
     }catch(err){
       console.log(err)
@@ -58,7 +60,7 @@ module.exports = {
         res.status(404).json({message: 'no user with that ID'});
       }
       await Thought.deleteMany({ _id: { $in: user.thoughts }});
-      res.json({message: 'user and thoughts deleted'});
+      res.json({message: `user and thoughts DELETED for ${user}`});
     }catch(err){
       res.status(500).json(err);
     }
@@ -100,15 +102,15 @@ module.exports = {
   // remove friend
   async removeFriend(req,res){
     try{
-      const user = await User.findOneAndUpdate(
+      const friend = await User.findOneAndUpdate(
         { _id: req.params.userId },
-        {$pull: { user: { userId: req.params.userId}}},
+        {$pull: { friends: { userId: req.params.userId}}},
         { runValidators: true, new: true }
       );
-      if (!user){
+      if (!friend){
         return res.status(404).json({message: 'no friend with that ID'});
       }
-      res.json(user);
+      res.json({message: 'removed!'});
     }catch(err){
       res.status(500).json(err);
     }

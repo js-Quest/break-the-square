@@ -1,13 +1,5 @@
 const {User, Thought} = require('../models');
 
-// Aggregate function to get the number of friends
-const friendCount = async () => {
-  const numberOfFriends = await User.aggregate()
-    .count('friendCount');
-    console.log(numberOfFriends);
-  return numberOfFriends;
-}
-
 
 module.exports = {
   // get all users
@@ -24,18 +16,19 @@ module.exports = {
   async getSingleUser(req,res){
     try{
       const user = await User.findOne({_id: req.params.userId})
-        .select('-__v'); //exclude the -__v field
+        .select('-__v')
+        .populate('thoughts')
+        .populate('friends');
+         //exclude the -__v field
+
       if (!user){
         return res.status(404).json({message: 'no user with that ID'});
       }
+    
 
-      const userObj = {
-        user,
-        friendCount: await friendCount(),
-      };
-
-      res.json(userObj);
+      res.json(user);
     }catch(err){
+      console.log(err);
       res.status(500).json(err);
     }
   },
@@ -84,11 +77,10 @@ module.exports = {
   // add friend
   async addFriend(req,res){
     console.log('you are adding a friend');
-    console.log(req.body)
     try{
       const user = await User.findOneAndUpdate(
         { _id: req.params.userId },
-        { $addToSet: { friends: req.body }},
+        { $addToSet: { friends: req.params.friendId }},
         { runValidators: true, new: true}
       );
       if (!user){

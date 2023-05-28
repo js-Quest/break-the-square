@@ -21,11 +21,7 @@ module.exports = {
       if (!thought) {
         return res.status(4040).json({ message: 'no thought with that ID' })
       }
-      const thoughtObj = {
-        thought,
-        reactionCount: await reactionCount(),
-      };
-      res.json(thoughtObj)
+      res.json(thought)
     } catch (err) {
       console.log(err);
       return res.status(500).json(err);
@@ -42,8 +38,9 @@ module.exports = {
         { new: true }
       )
 
-      res.json({ message: 'thought has been created' });
+      res.json({ message: 'thought has been created', thought });
     } catch (err) {
+      console.log(err)
       res.status(500).json(err);
     }
   },
@@ -58,7 +55,7 @@ module.exports = {
       if (!thought) {
         res.status(404).json({ message: 'no thought with that ID' });
       }
-      res.json(thought)
+      res.json({ message: 'thought has been Updated', thought })
     } catch (err) {
       res.status(500).json(err);
     }
@@ -90,7 +87,7 @@ module.exports = {
       if (!thought) {
         return res.status(404).json({ message: 'no thought with that ID' })
       }
-      res.json(thought);
+      res.json({message: `your reaction has been added!`, thought});
     } catch (err) {
       res.status(500).json(err);
     }
@@ -107,7 +104,7 @@ module.exports = {
       if (!thought) {
         return res.status(404).json({ message: 'no thought with that ID' })
       }
-      res.json(thought);
+      res.json({ message: `your reaction has been Removed!`, thought });
     } catch (err) {
       res.status(500).json(err)
     }

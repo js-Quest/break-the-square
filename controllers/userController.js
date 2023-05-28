@@ -53,7 +53,7 @@ module.exports = {
         res.status(404).json({message: 'no user with that ID'});
       }
       await Thought.deleteMany({ _id: { $in: user.thoughts }});
-      res.json({message: `user and thoughts DELETED for ${user}`});
+      res.json({message: `user and thoughts DELETED for ${user.username}`});
     }catch(err){
       res.status(500).json(err);
     }
@@ -69,7 +69,7 @@ module.exports = {
       if (!user){
         res.status(404).json({message: 'no user with that ID'});
       }
-      res.json(user);
+      res.json({message: `${user.username} updated`, user});
     }catch(err){
       res.status(500).json(err);
     }
@@ -86,7 +86,7 @@ module.exports = {
       if (!user){
         return res.status(404).json({message: 'no friend with that ID'});
       }
-      res.json(user);
+      res.json({ message: `${user.username} added as Friend`, user});
     }catch(err){
       res.status(500).json(err);
     }
@@ -102,7 +102,7 @@ module.exports = {
       if (!friend){
         return res.status(404).json({message: 'no friend with that ID'});
       }
-      res.json({message: 'removed!'});
+      res.json({ message: `${friend.username} is not your friend anymore`, friend });
     }catch(err){
       res.status(500).json(err);
     }

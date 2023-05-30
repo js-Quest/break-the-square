@@ -25,12 +25,13 @@
   `npm start` to start local server
   
   ## Usage
+  [video walk-through](https://drive.google.com/file/d/1a4yGz03oCKu1Gs4Yp5e15LrlLbq9B2pe/view)
   This is an example of an API for backend use for a social network database.  Check out the /models folder to see what kind of information to input in the API query JSON field.  Check out the /routes folder to see what routes you can use for api queries or read the examples below:  
 
   examples:  all routes start with the localhost:3001 (or whichever local host you use)  followed by /api, so it looks like `localhost:3001/api`  
   
   **User Routes**   
-  `/users` GET find all users (looks like `localhost:3001/api/users`)
+  `/users` GET find all users (looks like `localhost:3001/api/users`)     
   `/users/:id` GET find user by ID  
   `/users/:id` PUT update user by ID  
   `/users/:id` DELETE delete user by ID  
